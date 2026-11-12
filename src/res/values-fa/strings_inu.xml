@@ -430,7 +430,7 @@
     <string name="InuDisableScrimBlur">غیرفعال کردن تاری پس‌زمینه‌ی تیره</string>
     <string name="InuDisableScrimBlurInfo">پس‌زمینه‌ی تارشده پشت منوهای زمینه و پیش‌نمایش‌ها را با تیرگی ساده جایگزین می‌کند. فعال کردن آن ممکن است کندی را کم کند.</string>
     <string name="InuDisableGlassGlare">غیرفعال کردن درخشش شیشه‌ای</string>
-    <string name="InuReduceMenuMotion">کاهش حرکت منوها</string>
+    <string name="InuReduceMenuMotion">کاهش جلوه‌های حرکتی منوها</string>
     <string name="InuReduceMenuMotionInfo">ظاهر شدن پله‌ای منوهای زمینه را حذف می‌کند، انیمیشن‌های منوی پیام را ساده می‌کند و برای منوهای سرصفحه از پنجره‌های ساده استفاده می‌کند</string>
     <string name="InuProfilePhotoGradientFade">غیرفعال کردن تاری عکس پروفایل</string>
     <string name="InuNonIslandUI">رابط کلاسیک</string>
