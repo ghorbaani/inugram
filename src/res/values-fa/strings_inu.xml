@@ -68,7 +68,7 @@
     <string name="InuMonetThemeDisabled">غیرفعال</string>
     <string name="InuMonetThemeLight">روشن</string>
     <string name="InuMonetThemeDark">تیره</string>
-    <string name="InuMonetThemeAmoled">AMOLED</string>
+    <string name="InuMonetThemeAmoled">تم AMOLED</string>
     <string name="InuMonetThemeAuto">خودکار</string>
     <string name="InuMonetThemeAutoAmoled">خودکار (AMOLED)</string>
     <string name="InuAttachCamera">دوربین</string>
@@ -104,7 +104,7 @@
     <string name="InuDisableSwipeToHideGeneralTopic">غیرفعال کردن کشیدن برای پنهان کردن موضوع «عمومی»</string>
     <string name="InuResetStorage">بازنشانی حافظه</string>
     <string name="InuResetStorageConfirm">این کار کلیدهای احراز هویت محلی و حافظه‌ی نهان را پاک می‌کند تا احراز هویت در حال انتظار بازنشانی شود. مطمئن هستید؟</string>
-    <string name="InuHideBottomBar">پنهان کردن نوار پایین</string>
+    <string name="InuHideBottomBar">مخفی کردن نوار پایین</string>
     <string name="InuHideBottomBarJoined">کانال‌های عضوشده</string>
     <string name="InuHideBottomBarNonJoined">کانال‌های عضونشده</string>
     <string name="InuHideBottomBarNonJoinedGroups">گروه‌های عضونشده</string>
@@ -192,8 +192,8 @@
     <string name="InuHideRichEditorButton">پنهان کردن دکمه‌ی ویرایشگر متن غنی</string>
     <string name="InuDisableProfileScrollSnap">غیرفعال کردن توقف پله‌ای پیمایش پروفایل</string>
     <string name="InuDisableProfileScrollSnapInfo">هنگام پیمایش، سرصفحه‌ی پروفایل به موقعیت‌های ثابت نچسبد</string>
-    <string name="InuReduceProfileMotion">کاهش حرکت در پروفایل</string>
-    <string name="InuProfilePreferMediaTab">ترجیح زبانه‌ی «رسانه»</string>
+    <string name="InuReduceProfileMotion">کاهش انیمیشن‌های نمایه</string>
+    <string name="InuProfilePreferMediaTab">نمایش پیش‌فرض زبانهٔ رسانه در نمایه</string>
     <string name="InuProfilePreferMediaTabInfo">…به‌جای زبانه‌های هدیه‌ها و پست‌ها</string>
     <string name="InuShowProfileGiftButton">نمایش دکمه‌ی کنش «هدیه»</string>
     <string name="InuDisableMotionPhotos">غیرفعال کردن عکس‌های متحرک</string>
@@ -212,7 +212,7 @@
     <string name="InuHideSuggestionBirthdayContacts">تولد مخاطبان</string>
     <string name="InuHideSuggestionPassword">یادآوری گذرواژه</string>
     <string name="InuHideSuggestionPhone">یادآوری شماره‌ی تلفن</string>
-    <string name="InuHideSuggestionPremium">تبلیغ پریمیوم</string>
+    <string name="InuHideSuggestionPremium">پنهان کردن پیشنهاد پرمیوم</string>
     <string name="InuHideSuggestionCustom">سفارشی سمت سرور</string>
     <string name="InuFolders">پوشه‌ها</string>
     <string name="InuFoldersDisplayMode">حالت نمایش</string>
@@ -256,7 +256,7 @@
     <string name="InuHdBluetoothCallAudioInfo">صدای تماس را به‌صورت رسانه پخش می‌کند، به‌جای این‌که هدفون را به نمایه‌ی کم‌کیفیت هدست ببرد و از میکروفون گوشی استفاده کند. وقتی اعمال می‌شود که هنگام شروع تماس یک دستگاه بلوتوث متصل باشد</string>
     <string name="InuConfirmInternalLinks">تأیید باز کردن پیوندهای داخلی</string>
     <string name="InuConfirmInternalLinksInfo">tg:// و t.me/</string>
-    <string name="InuDisableBrowserSwipeCollapse">غیرفعال کردن کشیدن به پایین برای کوچک کردن مرورگر</string>
+    <string name="InuDisableBrowserSwipeCollapse">غیرفعال کردن کوچک‌شدن مرورگر با کشیدن صفحه به پایین</string>
     <string name="InuGifSeekbar">نوار جست‌وجو برای گیف‌ها</string>
     <string name="InuGifSeekbarInfo">توجه: فقط برای گیف‌های «جدید» (یعنی MP4 بی‌صدا) کار می‌کند</string>
     <string name="InuPublicPhotoMark">عکس عمومی</string>
@@ -378,8 +378,8 @@
     <string name="InuIconPackDeleteConfirm">%1$s حذف شود؟</string>
     <string name="InuMapsHeader">نقشه‌ها</string>
     <string name="InuMapProvider">سرویس نمایش نقشه</string>
-    <string name="InuMapProviderGoogle">Google Maps</string>
-    <string name="InuMapProviderOsm">OpenStreetMap</string>
+    <string name="InuMapProviderGoogle">نقشهٔ Google</string>
+    <string name="InuMapProviderOsm">نقشهٔ OpenStreetMap</string>
     <string name="InuMapPreviewProvider">سرویس پیش‌نمایش نقشه</string>
     <string name="InuMapPreviewProviderTelegram">تلگرام</string>
     <string name="InuMapPreviewProviderGoogle">Google</string>
@@ -499,7 +499,7 @@
     <string name="InuForwardHeaderModeIcon">نماد</string>
     <string name="InuForwardHeaderModeIconNoTimeInfo">مثل حالت فشرده، وقتی «نمایش زمان فوروارد» خاموش است</string>
     <string name="InuForwardHeaderModeCompact">فشرده</string>
-    <string name="InuShowForwardsCount">نمایش تعداد فوروارد</string>
+    <string name="InuShowForwardsCount">نمایش تعداد بازنشرها</string>
     <string name="InuCompactEdited">نشانگر فشرده‌ی ویرایش</string>
     <string name="InuEditedMessageDateMode">زمان پیام ویرایش‌شده</string>
     <string name="InuEditedMessageDateModeTelegram">پیش‌فرض</string>
@@ -652,8 +652,8 @@
     <string name="InuProxyImportNothing">پیوند پروکسی جدیدی در کلیپ‌بورد پیدا نشد</string>
     <string name="InuProxyImported_one">%1$d پروکسی وارد شد</string>
     <string name="InuProxyImported_other">%1$d پروکسی وارد شد</string>
-    <string name="InuFasterDownloads">دانلود سریع‌تر</string>
-    <string name="InuFasterUploads">آپلود سریع‌تر</string>
+    <string name="InuFasterDownloads">افزایش سرعت دانلود</string>
+    <string name="InuFasterUploads">افزایش سرعت بارگذاری</string>
     <string name="InuFasterTransfersInfo">اندازه‌ی قطعه‌ها و تعداد درخواست‌های هم‌زمان را افزایش می‌دهد. ممکن است سرعت را بهتر کند، اما ممکن است اثر معکوس هم داشته باشد (به‌ویژه برای کاربران غیر پریمیوم)</string>
     <string name="InuSendMp4DocumentAsVideo">ارسال سندهای MP4 به‌صورت ویدیو</string>
     <string name="InuSendMp4DocumentAsVideoInfo">فایل‌های MP4 که از بخش «فایل‌ها» پیوست می‌شوند، بدون تبدیل و به‌صورت ویدیوی قابل‌پخش ارسال می‌شوند</string>
@@ -1004,7 +1004,22 @@
     <string name="InuWalletKeyReplacedInfo">اکنون نشانی شما و ۱۲ کلمه‌ی جدید این کیف پول را بازیابی می‌کنند.</string>
     <string name="InuWalletPrivateKeyBackupUnavailable">از کیف‌پول‌هایی که با کلید خصوصی وارد شده‌اند نمی‌توان در تلگرام پشتیبان گرفت، چون برنامه‌های دیگر نمی‌توانند آن‌ها را بازیابی کنند. کلید را خودتان در جای امنی نگه دارید.</string>
     <string name="InuSendServerError">تلگرام در تحویل پیام شما مشکل دارد. هنوز در حال تلاش مجدد…</string>
-    <string name="InuJalaliDates">تاریخ جلالی</string>
-    <string name="InuJalaliDatesInfo">بخش تاریخ زمان‌ها را به تقویم جلالی نشان می‌دهد؛ ساعت‌ها تغییری نمی‌کنند. پیام‌هایی که از قبل نمایش داده شده‌اند، پس از بستن و دوباره باز کردن گفتگو به‌روز می‌شوند.</string>
-    <string name="InuJalaliPersianDigits">ارقام فارسی در تاریخ جلالی</string>
+    <string name="InuJalaliDates">نمایش تاریخ شمسی</string>
+    <string name="InuJalaliDatesInfo">بخش تاریخِ زمان‌ها را بر اساس تقویم جلالی نمایش می‌دهد؛ ساعت‌ها تغییری نمی‌کنند. تاریخ پیام‌هایی که پیش‌تر نمایش داده شده‌اند، پس از باز کردن دوبارهٔ گفتگو به‌روز می‌شود.</string>
+    <string name="InuJalaliPersianDigits">استفاده از ارقام فارسی</string>
+
+    <!-- ترجمه‌های تکمیلی -->
+    <string name="InuWhatsNew">تازه‌های این نسخه</string>
+    <string name="InuWhatsNewOnUpdate">نمایش تغییرات نسخه پس از به‌روزرسانی</string>
+    <string name="InuWhatsNewBadge">جدید</string>
+    <string name="InuWhatsNewDontShowAgain">دیگر نمایش نده</string>
+    <string name="InuWhatsNewDisabled">دیگر تغییرات نسخه نمایش داده نمی‌شوند</string>
+    <string name="InuWhatsNewDisabledInfo">می‌توانید همیشه آن‌ها را از مسیر **تنظیمات › تازه‌های این نسخه** بخوانید.</string>
+    <string name="InuDisguiseName">تلگرام</string>
+    <string name="InuCrashPluginHooks">افزونه‌هایی که هنگام بروز خطا اجرا شدند؛ ممکن است یکی از آن‌ها علت مشکل باشد:</string>
+    <string name="InuPluginGrantNotificationsPost">انتشار اعلان‌ها</string>
+    <string name="InuLinkedChats">گفتگوهای پیوندشده</string>
+    <string name="InuLinkedChatsInfo">یک گفتگو را به فهرست گفتگوهای حساب دیگری اضافه کنید و بدون جابه‌جایی بین حساب‌ها، از همان‌جا به آن دسترسی داشته باشید.</string>
+    <string name="InuLinkedChatsAdd">افزودن به حساب</string>
+    <string name="InuLinkedChatsRemove">حذف از این حساب</string>
 </resources>
