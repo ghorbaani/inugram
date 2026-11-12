@@ -1,207 +1,159 @@
-<div dir="rtl">
+# Inugram
 
-# اینوگرام فارسی
+> there are many tga forks, but this one is mine
 
-نسخهٔ فارسی‌شده و توسعه‌یافتهٔ [Inugram](https://github.com/teidesu/inugram)؛ یک کلاینت تلگرام برای اندروید با پشتیبانی از زبان فارسی، فونت وزیرمتن و تقویم جلالی.
+a very cool and dog-pilled fork (or rather, *patchset*, see below) of Telegram Android
 
-این پروژه با حفظ ساختار و قابلیت‌های اصلی Inugram، تجربه‌ای فارسی‌تر و سازگارتر با نیاز کاربران فارسی‌زبان فراهم می‌کند.
+## primary goals
 
-> این پروژه غیررسمی است و هیچ وابستگی یا ارتباطی با تلگرام یا سازندهٔ اصلی اینوگرام ندارد.
+this fork is primarily intended for long-term Telegram users who want a clean and robust exparience without all the bloat.
 
-## قابلیت‌های اضافه‌شده
+you can expect:
+- removed annoyances
+- *a lot* of qol features
+- ui tweaks to make it look prettier and cleaner
+- opinionated defaults
 
-### ۱. ترجمهٔ کامل فارسی
+all that while still allowing users to disable our custom tweaks to (mostly) achieve the stock experience (but why?)
 
-بیش از ۱۰۰۰ رشتهٔ متنی اینوگرام، شامل تنظیمات، منوها، هشدارها، پیام‌ها و صفحهٔ افزونه‌ها، به فارسی ترجمه و بازبینی شده‌اند.
+see [FEATURES.md](FEATURES.md) for a non-exhaustive list of what's added/tweaked/fixed (kept in sync as patches land).
 
-فایل ترجمه:
+### why should i use this over whatevergram?
 
-`src/res/values-fa/strings_inu.xml`
+i don't know. maybe you shouldn't.
 
-متن‌های مربوط به خود تلگرام که از بسته‌های زبان تلگرام دریافت می‌شوند، در این پروژه قرار ندارند و توسط زیرساخت تلگرام ترجمه می‌شوند.
+inugram exists primarily for my own personal use, because i got tired of the bloat (and lack of transparency) that most forks are, and latest stock is borderline unusable.
+and apparently my vision for a good ui/ux client and declutter aligns well with many long-term telegram users who spend hours in the app daily, so here we are.
 
-### ۲. فونت وزیرمتن
+feel free to fork this repo and remove patches you don't like or add your own, or even "steal" the features you like to your own fork. i really don't care.
 
-فونت [وزیرمتن](https://github.com/rastikerdar/vazirmatn) به‌صورت داخلی در برنامه قرار گرفته است.
+## patchset, not a fork
 
-در اولین اجرای برنامه، اگر فونت برنامه هنوز روی حالت پیش‌فرض باشد، وزیرمتن به‌صورت خودکار اعمال می‌شود. اگر قبلاً فونت دیگری انتخاب کرده باشید، تنظیم شما تغییر نمی‌کند.
+unlike most alternative clients based on Telegram Android, Inugram is a patchset.
+it is not a fork in the traditional sense, but rather a collection of patches applied to the stock codebase.
 
-از مسیر زیر می‌توانید فونت را تغییر دهید یا حذف کنید:
+a few advantages of such approach:
+- easier rebase, since the stock code vs fork code is clearly separated
+- easier to audit the changes, since the modifications are all in one place
+- easier for bugfixes to land upstream (although i dont think they really care)
 
-**تنظیمات اینوگرام ← فونت‌ها**
+the patchset is managed using stgit and a few supporting scripts in `scripts/`.
 
-### ۳. تقویم جلالی
+## repo layout
 
-نمایش تاریخ در بخش‌های مختلف برنامه به تقویم جلالی تبدیل شده است؛ از جمله:
+- `src/fork`: our custom Kotlin code
+- `src/fork-app`: ditto, for the bits that live in the app module instead of the library one
+- `src/core`: InuCore, a plain jvm module (so it can be tested without a device)
+- `src/native`: rust plugin engine (quickjs + jni bridge)
+- `src/test`: on-device suite for the plugin bridge (`kotlin/`) and the files it needs (`assets/`)
+- `src/vendor`: third-party code copied in as-is
+- `src/res`: our custom resources
+- `sdk`: the plugin sdk - the api typings (`sdk/types`) and the author-facing cli (`sdk/cli`)
+- `patches/`: stock patches
+- `series`: patch apply order
+- `upstream-commit`: pinned Telegram commit
+- `worktree/`: local Telegram checkout, gitignored
+- `worktree-pluginless/`: separate checkout prepared by `setup --pluginless`, gitignored. should not be used for development.
 
-- جداکنندهٔ روزها در گفتگوها
-- فهرست گفتگوها
-- آخرین بازدید کاربران
-- جزئیات پیام‌ها
-- زمان‌بندی و سایر بخش‌های نمایش تاریخ
+patches are grouped by their type:
 
-ساعت‌ها بدون تغییر باقی می‌مانند.
+| type | description |
+| --- | --- |
+| `bugfix` | fixes a bug in the upstream codebase |
+| `feature` | adds a contained feature (one or more, if they're related) to the app (qol, ui tweaks, etc.) |
+| `debloat` | hiding stock "features" behind a toggle. you could also call it "un-feature" |
+| `hooks` | small hooks into the various parts of the app to jump into our custom kotlin code for easier maintenance |
+| `misc` | everything else, stuff like build support and such |
 
-**مسیر فعال‌سازی:**
+each patch strives to be small and self-contained. as a rule of thumb, we should be able to remove a patch and still have the app build, although this is not always possible.
 
-تنظیمات ← تنظیمات اینوگرام ← رفتار ← قالب‌بندی
+in stgit, patch names are delimited using double underscore, e.g. `patches/misc/whatever.patch` becomes `misc__whatever` in stgit.
 
-- **تاریخ جلالی:** روشن / خاموش
-- **ارقام فارسی در تاریخ جلالی:** روشن / خاموش
+## contributing
 
-پس از فعال‌سازی، برای به‌روزرسانی نمایش تاریخ‌ها، گفتگو را ببندید و دوباره باز کنید.
+contributions are welcome, but before implementing a new feature please ping me to discuss it
 
-نمونهٔ نمایش تاریخ:
+requirements: Node.js 20+, `git`, `stg`
 
-- ۲۱ آبان
-- ۱۴۰۵/۰۸/۲۱
+```sh
+pnpm install
+pnpm run setup
+```
 
-> وضعیت پیش‌فرض تاریخ جلالی در این نسخه خاموش است و می‌توانید آن را از تنظیمات فعال کنید.
+this will clone the upstream into `worktree/` and set up stgit in it, along with all the current patches.
+you can then simply open (not import!) `worktree/` in Android Studio and start hacking. it should build right away.
 
-## فایل‌های تغییرکرده
+`pnpm run setup -- --pluginless` prepares `worktree-pluginless/` instead, skipping
+`feature/plugins.patch`, LSPlant and its nested submodules/local patches, and plugin API generation.
+It also works with `--ci` and `--no-submodules`. Build it with `pnpm run build-debug-pluginless`.
+The plain build excludes the plugin engine, native hooking libraries, plugin screens, and plugin test assets.
+Other scripts continue to target `worktree/`.
 
-| فایل | توضیحات |
-|---|---|
-| `src/res/values-fa/strings_inu.xml` | ترجمهٔ فارسی |
-| `src/res/assets/Vazirmatn.ttf` | فایل فونت وزیرمتن |
-| `src/fork/helpers/font/VazirmatnHelper.kt` | اعمال خودکار فونت |
-| `src/fork/helpers/JalaliDateHelper.kt` | تبدیل و قالب‌بندی تاریخ جلالی |
-| `patches/feature/jalali-dates.patch` | اتصال قابلیت تاریخ جلالی به سیستم نمایش تاریخ |
-| `series` | ثبت patch تاریخ جلالی |
-| `scripts/config.ts` | ثبت منابع ترجمهٔ فارسی |
-| `src/fork/helpers/font/FontConfig.kt` | تنظیمات فونت |
-| `src/fork/helpers/font/FontHelper.kt` | مدیریت فونت |
-| `src/fork/InuConfig.kt` | تنظیمات قابلیت‌های فورک |
-| `src/fork/ui/settings/BehaviorSettingsActivity.kt` | تنظیمات رفتار و تاریخ جلالی |
-| `src/res/values/strings_inu.xml` | رشته‌های انگلیسی مربوط به تنظیمات تاریخ جلالی |
+Setup writes the checkout's build variant to the ignored `inu-build.properties` file.
+Gradle exposes it as `BuildConfig.INU_PLUGINLESS` in both Android modules.
 
-## دریافت و نصب
+Fork Kotlin sources are linked under `TMessagesProj/src/inu/kotlin` and preprocessed by Gradle's
+`preprocessInuSources` task into `build/generated/inu/kotlin`. Edit `src/fork`, not the generated files.
+Use `// #if PLUGINS`, optional `// #else`, and `// #endif` around plugin-only imports and code.
+Both variants are preprocessed; nested directives are supported, excluded lines remain blank to
+preserve line numbers, and malformed directives fail the build.
 
-نسخه‌های آمادهٔ نصب از بخش **Releases** همین مخزن منتشر می‌شوند.
+### adding a new patch
 
-۱. وارد بخش Releases مخزن شوید.
+```bash
+stg new misc__my-patch -m 'my patch description' # to create a patch
+# ...do whatever you need in worktree/...
+stg refresh # to "commit" the worktree changes into the topmost patch
+pnpm run export # to export stgit into patches/
+```
 
-۲. آخرین نسخه را انتخاب کنید.
+### modifying an existing patch
 
-۳. فایل APK متناسب با نیاز خود را دریافت کنید.
+```bash
+# option 1: edit the patch in-place via stg refresh
+# ...do whatever you need in worktree/...
+stg refresh -p misc__my-patch # --index to only append staged changes
+pnpm run export
 
-۴. فایل APK را روی گوشی اندرویدی نصب کنید.
+# *pretty much* same as above, but manually
+# ...do whatever you need in worktree/...
+stg new tmp-patch
+stg refresh
+stg rebase -i # move tmp1 below the patch you want to edit, and replace "edit" with "s"
+pnpm run export
 
-در صورت ارائهٔ دو نسخه:
+# option 2: push the patch to the top of the stack
+stg float misc__my-patch
+# ...do whatever you need in worktree/...
+stg refresh
+pnpm run export
+```
 
-- **Full:** همراه با افزونه‌ها
-- **Pluginless:** بدون افزونه‌ها
+as a rule of thumb: prefer the former, but if you get a lot of merge conflicts, try `float`-ing instead.
 
-### ساخت APK از طریق GitHub Actions
+### auditing patch interactions
 
-برای ساخت دستی نسخهٔ جدید:
+```bash
+pnpm run lint-patches
+pnpm run lint-patches -- --check
+```
 
-۱. وارد تب **Actions** مخزن شوید.
+the audit reports later patches that fully revert an earlier patch or delete lines last changed by one. `--check` exits non-zero when it finds either.
 
-۲. Workflow مربوط به `release` را انتخاب کنید.
+## acknowledgements
 
-۳. روی **Run workflow** بزنید.
+- the original [Telegram Android](https://github.com/DrKLO/Telegram) - the basis for this fork
+- a bunch of features were ported from [Nekogram](https://github.com/Nekogram/Nekogram), [NagramX](https://github.com/risin42/NagramX), [materialgram](https://github.com/kukuruzka165/materialgram)
+- `src/res/drawable/icplaceholder.jpg` is a blurred version of [this artwork by Chobles](https://www.pixiv.net/en/artworks/128756420)
+- Tabler icons by [Tabler Team](https://tabler.io/icons)
+- Solar icon pack by [@r4in80w](https://t.me/r4in80w)
+- AdGuard URL Tracking filter by [AdGuard](https://adguard.com/)
 
-۴. شاخهٔ `fa` را انتخاب کنید.
+this project is llm-assisted: a bunch of the code and the patches were (and will be) written by claude. this doesn't mean it's "ai slop", i still review all the code myself,
+but im not an android dev by any means so it might not be perfect. ai-assisted contributions are welcome as long as you disclose that in the pr.
 
-۵. در صورت نبود فایل Changelog، گزینهٔ **Allow release without a changelog** را فعال کنید.
+if you have an issue with that - go make your own fork.
 
-۶. اجرای Workflow را آغاز کنید.
+## license
 
-پس از موفقیت مراحل Build و Sign، نسخهٔ امضاشده در بخش Releases منتشر می‌شود.
-
-### امضای APK
-
-نسخه‌های انتشار این فورک با Keystore اختصاصی پروژه امضا می‌شوند.
-
-بنابراین APKهای منتشرشده با کلید امضای نسخه‌های رسمی یا بیلدهای دارای امضای متفاوت یکسان نیستند.
-
-**نکتهٔ مهم:** برای نصب نسخهٔ جدید روی نسخهٔ قبلی، امضای APK باید با امضای نسخهٔ نصب‌شده یکسان باشد. در صورت تفاوت امضا، اندروید اجازهٔ نصب به‌عنوان به‌روزرسانی را نمی‌دهد.
-
-Keystore و رمزهای امضای پروژه باید به‌صورت امن و جداگانه پشتیبان‌گیری شوند. از دست رفتن آن‌ها می‌تواند انتشار به‌روزرسانی سازگار با نسخه‌های نصب‌شده را غیرممکن کند.
-
-### سازگاری
-
-- معماری فعلی بیلد: `arm64-v8a`
-- مناسب برای دستگاه‌های اندرویدی دارای پشتیبانی ۶۴ بیتی
-
-در گوشی‌های سامسونگ، اگر نصب APK مسدود شد، تنظیمات امنیتی مانند Auto Blocker را بررسی کنید.
-
-## پیام «به‌روزرسانی جدید»
-
-اینوگرام به‌صورت پیش‌فرض کانال `@InugramCI` را برای بررسی نسخه‌های جدید بررسی می‌کند.
-
-از آنجا که شمارهٔ ساخت این فورک ممکن است با نسخهٔ رسمی متفاوت باشد، احتمال نمایش پیام به‌روزرسانی وجود دارد.
-
-برای جلوگیری از دریافت اشتباهی نسخهٔ رسمی که فاقد تغییرات فارسی این پروژه است، از مسیر زیر بررسی خودکار به‌روزرسانی را غیرفعال کنید:
-
-**تنظیمات اینوگرام ← دربارهٔ برنامه ← بررسی خودکار به‌روزرسانی**
-
-برای دریافت نسخه‌های جدید فارسی، فقط از بخش Releases همین مخزن استفاده کنید.
-
-## ویرایش ترجمهٔ فارسی
-
-برای تغییر ترجمه‌ها، فایل زیر را ویرایش کنید:
-
-`src/res/values-fa/strings_inu.xml`
-
-نکات مهم:
-
-- نام کلیدها (`name`) را تغییر ندهید.
-- جای‌نگهدارهایی مانند `%1$s` و `%d` باید دقیقاً حفظ شوند.
-- نشانه‌های قالب‌بندی مانند `**` و کاراکترهای `\n` را حفظ کنید.
-- رشتهٔ `InuDisguiseName` را ترجمه نکنید؛ این رشته در نسخهٔ اصلی `translatable="false"` است.
-- برای نقل‌قول در متن فارسی از «» استفاده کنید یا علامت‌های نقل‌قول را به‌درستی Escape کنید.
-- پس از ویرایش، فایل ترجمه را از نظر کلیدهای مفقود و جای‌نگهدارها بررسی کنید.
-
-## شاخه‌ها و همگام‌سازی با پروژهٔ اصلی
-
-این مخزن دو شاخهٔ اصلی دارد:
-
-### `main`
-
-آینهٔ پروژهٔ اصلی Inugram است و تغییرات اختصاصی فارسی‌سازی در آن اعمال نمی‌شوند.
-
-### `fa`
-
-شاخهٔ اختصاصی اینوگرام فارسی است و تغییرات زیر را شامل می‌شود:
-
-- ترجمهٔ فارسی
-- فونت وزیرمتن
-- تقویم جلالی
-- تنظیمات اختصاصی فورک
-
-### روش دریافت به‌روزرسانی‌های پروژهٔ اصلی
-
-هر زمان پروژهٔ اصلی Inugram به‌روزرسانی شد:
-
-۱. وارد صفحهٔ مخزن فورک شوید.
-
-۲. از بخش **Sync fork**، گزینهٔ **Update branch** را برای شاخهٔ `main` انتخاب کنید.
-
-۳. یک Pull Request جدید ایجاد کنید:
-
-- **base:** `fa`
-- **compare:** `main`
-
-۴. تغییرات را بررسی و در صورت اطمینان ادغام کنید.
-
-۵. در صورت بروز تداخل، تغییرات اختصاصی فارسی‌سازی را حفظ و بخش‌های مربوط به قابلیت‌های جدید پروژهٔ اصلی را نیز بررسی کنید.
-
-۶. پس از ادغام، شاخهٔ `fa` را بیلد و آزمایش کنید.
-
-> توجه: فایل `series` باید شامل patch مربوط به `feature/jalali-dates.patch` باشد و این patch در انتهای فهرست باقی بماند.
-
-> هرگز شاخهٔ `fa` را داخل `main` ادغام نکنید و از گزینهٔ **Discard commits** استفاده نکنید.
-
-## تقدیر و مجوزها
-
-این پروژه بر پایهٔ نرم‌افزارها و منابع زیر ساخته شده است:
-
-- [Inugram](https://github.com/teidesu/inugram) اثر Alina Sireneva، تحت مجوز MIT
-- Telegram Android اثر تیم Telegram، تحت مجوز GPL v2
-- [Vazirmatn](https://github.com/rastikerdar/vazirmatn) اثر صابر راستی‌کردار، تحت مجوز SIL Open Font License
-
-برای مشاهدهٔ فهرست قابلیت‌های اصلی Inugram، فایل [FEATURES.md](FEATURES.md) را مطالعه کنید.
-
-</div>
+abolish copyright law tbh, but let's just say the repo is licensed under MIT
