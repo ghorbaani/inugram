@@ -123,6 +123,12 @@ object InuConfig {
     val SHOW_SECONDS = BoolItem("show_seconds", false)
 
     @JvmField
+    val JALALI_DATES = BoolItem("jalali_dates", false)
+
+    @JvmField
+    val JALALI_PERSIAN_DIGITS = BoolItem("jalali_persian_digits", true)
+
+    @JvmField
     val DISABLE_ROUNDING = BoolItem("disable_rounding", false)
 
     @JvmField

@@ -47,6 +47,20 @@ class BehaviorSettingsActivity : SettingsPageActivity() {
                 LocaleController.getString(R.string.InuShowSeconds)
             ).setChecked(InuConfig.SHOW_SECONDS.value)
         )
+                items.add(
+            mkTwoLineCheckItem(
+                TOGGLE_JALALI_DATES,
+                R.string.InuJalaliDates,
+                R.string.InuJalaliDatesInfo,
+                InuConfig.JALALI_DATES.value
+            )
+        )
+        items.add(
+            UItem.asCheck(
+                TOGGLE_JALALI_PERSIAN_DIGITS,
+                LocaleController.getString(R.string.InuJalaliPersianDigits)
+            ).setChecked(InuConfig.JALALI_PERSIAN_DIGITS.value)
+        )
         items.add(
             mkTwoLineCheckItem(
                 TOGGLE_DISABLE_ROUNDING,
@@ -308,6 +322,16 @@ class BehaviorSettingsActivity : SettingsPageActivity() {
                 (view as? TextCheckCell)?.isChecked = new
             }
 
+            TOGGLE_JALALI_DATES -> {
+                val new = InuConfig.JALALI_DATES.toggle()
+                (view as? NotificationsCheckCell)?.isChecked = new
+            }
+
+            TOGGLE_JALALI_PERSIAN_DIGITS -> {
+                val new = InuConfig.JALALI_PERSIAN_DIGITS.toggle()
+                (view as? TextCheckCell)?.isChecked = new
+            }
+
             TOGGLE_ACCOUNT_SWITCH_SHORTCUT -> {
                 val new = InuConfig.ACCOUNT_SWITCH_SHORTCUT.toggle()
                 (view as? NotificationsCheckCell)?.isChecked = new
@@ -444,6 +468,8 @@ class BehaviorSettingsActivity : SettingsPageActivity() {
         private val BUTTON_MAP_PROVIDER = InuUtils.generateId()
         private val BUTTON_MAP_PREVIEW_PROVIDER = InuUtils.generateId()
         private val TOGGLE_SHOW_SECONDS = InuUtils.generateId()
+        private val TOGGLE_JALALI_DATES = InuUtils.generateId()
+        private val TOGGLE_JALALI_PERSIAN_DIGITS = InuUtils.generateId()
         private val TOGGLE_DISABLE_ROUNDING = InuUtils.generateId()
         private val TOGGLE_ACCOUNT_SWITCH_SHORTCUT = InuUtils.generateId()
 
@@ -485,6 +511,8 @@ class BehaviorSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("map-provider", R.string.InuMapProvider, BUTTON_MAP_PROVIDER),
                 SearchRegistry.Entry("map-preview-provider", R.string.InuMapPreviewProvider, BUTTON_MAP_PREVIEW_PROVIDER),
                 SearchRegistry.Entry("show-seconds", R.string.InuShowSeconds, TOGGLE_SHOW_SECONDS),
+                SearchRegistry.Entry("jalali-dates", R.string.InuJalaliDates, TOGGLE_JALALI_DATES),
+                SearchRegistry.Entry("jalali-persian-digits", R.string.InuJalaliPersianDigits, TOGGLE_JALALI_PERSIAN_DIGITS),
                 SearchRegistry.Entry("disable-rounding", R.string.InuDisableRounding, TOGGLE_DISABLE_ROUNDING),
                 SearchRegistry.Entry("account-switch-shortcut", R.string.InuAccountSwitchShortcut, TOGGLE_ACCOUNT_SWITCH_SHORTCUT),
             ),

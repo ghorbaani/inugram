@@ -1,0 +1,324 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: inugram-fa <noreply@example.com>
+Date: Thu, 12 Nov 2026 12:00:00 +0330
+Subject: show dates in the Jalali (Persian) calendar
+
+---
+ .../java/org/telegram/messenger/LocaleController.java | 121 +++++-----
+ 1 file changed, 78 insertions(+), 43 deletions(-)
+
+diff --git a/TMessagesProj/src/main/java/org/telegram/messenger/LocaleController.java b/TMessagesProj/src/main/java/org/telegram/messenger/LocaleController.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/messenger/LocaleController.java
++++ b/TMessagesProj/src/main/java/org/telegram/messenger/LocaleController.java
+@@ -2113,6 +2113,41 @@ public class LocaleController {
+         checkLocalizationInternal();
+     }
+ 
++    private static String jalaliDayMonth(long ms) {
++        String j = desu.inugram.helpers.JalaliDateHelper.dayMonth(ms);
++        return j != null ? j : getInstance().getFormatterDayMonth().format(ms);
++    }
++
++    private static String jalaliYear(long ms) {
++        String j = desu.inugram.helpers.JalaliDateHelper.numericDate(ms);
++        return j != null ? j : getInstance().getFormatterYear().format(ms);
++    }
++
++    private static String jalaliChatDate(long ms) {
++        String j = desu.inugram.helpers.JalaliDateHelper.dayMonth(ms);
++        return j != null ? j : getInstance().getChatDate().format(ms);
++    }
++
++    private static String jalaliChatDateShort(long ms) {
++        String j = desu.inugram.helpers.JalaliDateHelper.dayMonth(ms);
++        return j != null ? j : getInstance().getChatDateShort().format(ms);
++    }
++
++    private static String jalaliChatFullDate(long ms) {
++        String j = desu.inugram.helpers.JalaliDateHelper.fullDate(ms);
++        return j != null ? j : getInstance().getChatFullDate().format(ms);
++    }
++
++    private static String jalaliScheduleDay(long ms) {
++        String j = desu.inugram.helpers.JalaliDateHelper.dayMonth(ms);
++        return j != null ? j : getInstance().getFormatterScheduleDay().format(ms);
++    }
++
++    private static String jalaliScheduleYear(long ms) {
++        String j = desu.inugram.helpers.JalaliDateHelper.fullDate(ms);
++        return j != null ? j : getInstance().getFormatterScheduleYear().format(ms);
++    }
++
+     public static String formatDateChat(long date) {
+         return formatDateChat(date, false);
+     }
+@@ -2126,9 +2161,9 @@ public class LocaleController {
+ 
+             calendar.setTimeInMillis(date);
+             if (checkYear && currentYear == calendar.get(Calendar.YEAR) || !checkYear && Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return getInstance().getChatDate().format(date);
++                return jalaliChatDate(date);
+             }
+-            return getInstance().getChatFullDate().format(date);
++            return jalaliChatFullDate(date);
+         } catch (Exception e) {
+             FileLog.e(e);
+         }
+@@ -2147,9 +2182,9 @@ public class LocaleController {
+ 
+             calendar.setTimeInMillis(date);
+             if (!full && currentYear == calendar.get(Calendar.YEAR)) {
+-                return getInstance().getFormatterDayMonth().format(date);
++                return jalaliDayMonth(date);
+             }
+-            return getInstance().getFormatterDayMonth().format(date) + ", " + calendar.get(Calendar.YEAR);
++            return jalaliDayMonth(date) + ", " + desu.inugram.helpers.JalaliDateHelper.yearOr(date, calendar.get(Calendar.YEAR));
+         } catch (Exception e) {
+             FileLog.e(e);
+         }
+@@ -2177,9 +2212,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return getString("Yesterday", R.string.Yesterday);
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return getInstance().getFormatterDayMonth().format(new Date(date));
++                return jalaliDayMonth(date);
+             } else {
+-                return getInstance().getFormatterYear().format(new Date(date));
++                return jalaliYear(date);
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2206,9 +2241,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.YesterdayAtFormatted, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2231,9 +2266,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.YesterdayAtFormatted, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2256,9 +2291,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.PmReadYesterdayAt, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.PmReadDateTimeAt, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmReadDateTimeAt, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.PmReadDateTimeAt, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmReadDateTimeAt, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2281,9 +2316,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.TodoCompletedYesterdayAt, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.TodoCompletedDateTimeAt, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.TodoCompletedDateTimeAt, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.TodoCompletedDateTimeAt, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.TodoCompletedDateTimeAt, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2307,9 +2342,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.PmSentYesterdayAt, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.PmSentDateTimeAt, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmSentDateTimeAt, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.PmSentDateTimeAt, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmSentDateTimeAt, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2332,9 +2367,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.PmEditedYesterdayAt, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.PmEditedDateTimeAt, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmEditedDateTimeAt, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.PmEditedDateTimeAt, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmEditedDateTimeAt, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2357,9 +2392,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.PmFwdOriginalYesterdayAt, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.PmFwdOriginalDateTimeAt, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmFwdOriginalDateTimeAt, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.PmFwdOriginalDateTimeAt, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.PmFwdOriginalDateTimeAt, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2412,9 +2447,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.getString(R.string.ShortYesterday);
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return getInstance().getFormatterDayMonth().format(new Date(date));
++                return jalaliDayMonth(date);
+             } else {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2443,9 +2478,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.YesterdayAtFormatted, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2515,9 +2550,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.YesterdayAtFormatted, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getChatDateShort().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliChatDateShort(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getChatFullDate().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliChatFullDate(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2538,9 +2573,9 @@ public class LocaleController {
+             if (dateDay == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.TodayAtFormatted, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return getInstance().getFormatterScheduleDay().format(new Date(date));
++                return jalaliScheduleDay(date);
+             } else {
+-                return getInstance().getChatFullDate().format(new Date(date));
++                return jalaliChatFullDate(date);
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2563,9 +2598,9 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear && useToday) {
+                 return LocaleController.formatString(R.string.YesterdayAtFormatted, getInstance().getFormatterDay().format(new Date(date)));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getChatDate().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliChatDate(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                return LocaleController.formatString(R.string.formatDateAtTime, getInstance().getChatFullDate().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                return LocaleController.formatString(R.string.formatDateAtTime, jalaliChatFullDate(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2577,9 +2612,9 @@ public class LocaleController {
+         try {
+             date *= 1000;
+             if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                return getInstance().getFormatterScheduleDay().format(new Date(date)) + ", " + getInstance().getFormatterDay().format(new Date(date));
++                return jalaliScheduleDay(date) + ", " + getInstance().getFormatterDay().format(new Date(date));
+             } else {
+-                return getInstance().getFormatterScheduleYear().format(new Date(date)) + ", " + getInstance().getFormatterDay().format(new Date(date));
++                return jalaliScheduleYear(date) + ", " + getInstance().getFormatterDay().format(new Date(date));
+             }
+         } catch (Exception e) {
+             FileLog.e(e);
+@@ -2608,10 +2643,10 @@ public class LocaleController {
+             } else if (dateDay + 1 == day && year == dateYear) {
+                 return LocaleController.formatString(R.string.LocationUpdatedFormatted, LocaleController.formatString("YesterdayAtFormatted", R.string.YesterdayAtFormatted, getInstance().getFormatterDay().format(new Date(date))));
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                String format = LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                String format = LocaleController.formatString(R.string.formatDateAtTime, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+                 return LocaleController.formatString(R.string.LocationUpdatedFormatted, format);
+             } else {
+-                String format = LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                String format = LocaleController.formatString(R.string.formatDateAtTime, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+                 return LocaleController.formatString(R.string.LocationUpdatedFormatted, format);
+             }
+         } catch (Exception e) {
+@@ -2669,10 +2704,10 @@ public class LocaleController {
+                     return LocaleController.formatString(R.string.LastSeenFormatted, LocaleController.formatString("YesterdayAtFormatted", R.string.YesterdayAtFormatted, getInstance().getFormatterDay().format(new Date(date))));
+                 }
+             } else if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                String format = LocaleController.formatString("formatDateAtTime", R.string.formatDateAtTime, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                String format = LocaleController.formatString("formatDateAtTime", R.string.formatDateAtTime, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+                 return LocaleController.formatString("LastSeenDateFormatted", R.string.LastSeenDateFormatted, format);
+             } else {
+-                String format = LocaleController.formatString("formatDateAtTime", R.string.formatDateAtTime, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                String format = LocaleController.formatString("formatDateAtTime", R.string.formatDateAtTime, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+                 return LocaleController.formatString("LastSeenDateFormatted", R.string.LastSeenDateFormatted, format);
+             }
+         } catch (Exception e) {
+@@ -2872,7 +2907,7 @@ public class LocaleController {
+         try {
+             date *= 1000;
+             if (Math.abs(System.currentTimeMillis() - date) >= 31536000000L) {
+-                return getInstance().getFormatterYear().format(new Date(date));
++                return jalaliYear(date);
+             } else {
+                 Calendar rightNow = Calendar.getInstance();
+                 int day = rightNow.get(Calendar.DAY_OF_YEAR);
+@@ -2885,7 +2920,7 @@ public class LocaleController {
+                 } else if (dayDiff > -7 && dayDiff <= -1) {
+                     return getInstance().getFormatterWeek().format(new Date(date));
+                 } else {
+-                    return getInstance().getFormatterDayMonth().format(new Date(date));
++                    return jalaliDayMonth(date);
+                 }
+             }
+         } catch (Exception e) {
+@@ -2937,9 +2972,9 @@ public class LocaleController {
+             date *= 1000;
+             String format;
+             if (Math.abs(System.currentTimeMillis() - date) < 31536000000L) {
+-                format = LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterDayMonth().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                format = LocaleController.formatString(R.string.formatDateAtTime, jalaliDayMonth(date), getInstance().getFormatterDay().format(new Date(date)));
+             } else {
+-                format = LocaleController.formatString(R.string.formatDateAtTime, getInstance().getFormatterYear().format(new Date(date)), getInstance().getFormatterDay().format(new Date(date)));
++                format = LocaleController.formatString(R.string.formatDateAtTime, jalaliYear(date), getInstance().getFormatterDay().format(new Date(date)));
+             }
+             return formatString(R.string.ChannelOtherSubscriberJoined, format);
+         } catch (Exception e) {
+@@ -2952,7 +2987,7 @@ public class LocaleController {
+         try {
+             date *= 1000;
+             Date dt = new Date(date);
+-            return String.format("%1$s, %2$s", getInstance().getFormatterYear().format(dt), getInstance().getFormatterDay().format(dt));
++            return String.format("%1$s, %2$s", jalaliYear(dt.getTime()), getInstance().getFormatterDay().format(dt));
+         } catch (Exception e) {
+             FileLog.e(e);
+         }
+@@ -4687,9 +4722,9 @@ public class LocaleController {
+         if (forceFull) {
+             dateComponent = getInstance().getFormatterGiveawayCard().format(whenMillis);
+         } else if (e.long_date) {
+-            dateComponent = getInstance().getChatFullDate().format(whenMillis);
++            dateComponent = jalaliChatFullDate(whenMillis);
+         } else if (e.short_date) {
+-            dateComponent = getInstance().getFormatterYear().format(whenMillis);
++            dateComponent = jalaliYear(whenMillis);
+         }
+ 
+         if (forceFull) {

@@ -1050,4 +1050,7 @@
     <string name="InuLinkedChatsInfo">Add a chat to another account\'s chat list and use it from there without switching accounts.</string>
     <string name="InuLinkedChatsAdd">Add to account</string>
     <string name="InuLinkedChatsRemove">Remove from this account</string>
+    <string name="InuJalaliDates">Jalali (Persian) dates</string>
+    <string name="InuJalaliDatesInfo">Shows the date part of timestamps in the Jalali calendar. Times stay the same. Already shown messages update after reopening the chat.</string>
+    <string name="InuJalaliPersianDigits">Persian digits in Jalali dates</string>
 </resources>
