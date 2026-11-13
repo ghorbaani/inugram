@@ -43,7 +43,7 @@ object VazirmatnHelper {
         val tmp = File(context.cacheDir, "inu_$ASSET")
         try {
             context.assets.open(ASSET).use { input -> tmp.outputStream().use { input.copyTo(it) } }
-            val result = FontLibrary.importFromFile(tmp)
+            val result = FontLibrary.importFromFiles(listOf(tmp))
             if (result.addedFaces == 0) {
                 FileLog.d("$TAG: Vazirmatn import added no faces (rejected=${result.rejectedBySystem})")
                 return null
