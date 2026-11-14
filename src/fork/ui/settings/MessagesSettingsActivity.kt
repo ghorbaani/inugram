@@ -167,6 +167,12 @@ class MessagesSettingsActivity : SettingsPageActivity() {
 
         if (miscPreview == null) miscPreview = MiscPreviewMessagesCell(this.context, this)
         items.add(UItem.asHeader(LocaleController.getString(R.string.InuMiscellaneous)))
+        items.add(
+            UItem.asCheck(
+                TOGGLE_HIDE_SPONSORED_MESSAGES,
+                LocaleController.getString(R.string.InuHideSponsoredMessages),
+            ).setChecked(InuConfig.HIDE_SPONSORED_MESSAGES.value)
+        )
         items.add(UItem.asCustom(miscPreview))
         items.add(
             mkSubPageButton(
@@ -431,6 +437,12 @@ class MessagesSettingsActivity : SettingsPageActivity() {
 
             BUTTON_MESSAGE_MENU_ORDER -> presentFragment(MessageMenuOrderActivity())
 
+            TOGGLE_HIDE_SPONSORED_MESSAGES -> {
+                val new = InuConfig.HIDE_SPONSORED_MESSAGES.toggle()
+                (view as? TextCheckCell)?.isChecked = new
+                listView.adapter.update(true)
+            }
+
             BUTTON_DOUBLE_TAP_INCOMING -> showDoubleTapSelector(view, DoubleTapContext.INCOMING)
             BUTTON_DOUBLE_TAP_OUTGOING -> showDoubleTapSelector(view, DoubleTapContext.OUTGOING)
             BUTTON_DOUBLE_TAP_CHANNEL -> showDoubleTapSelector(view, DoubleTapContext.CHANNEL)
@@ -540,6 +552,7 @@ class MessagesSettingsActivity : SettingsPageActivity() {
         private val BUTTON_BLOCKED_MESSAGES_MODE = InuUtils.generateId()
         private val BUTTON_BLOCKED_MESSAGES_EXTRA = InuUtils.generateId()
         private val TOGGLE_BLOCKED_MESSAGES_REPLIES = InuUtils.generateId()
+        private val TOGGLE_HIDE_SPONSORED_MESSAGES = InuUtils.generateId()
 
         private fun textSpoilerModeLabel(value: Int): String = when (value) {
             InuConfig.TextSpoilerModeItem.SIMPLE -> LocaleController.getString(R.string.InuTextSpoilerModeSimple)
@@ -585,6 +598,7 @@ class MessagesSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("hide-reaction-entry", R.string.InuHideReactionEntry, TOGGLE_HIDE_REACTION_ENTRY),
                 SearchRegistry.Entry("confirm-reaction-non-member", R.string.InuConfirmReactionNonMember, TOGGLE_CONFIRM_REACTION_NON_MEMBER),
                 SearchRegistry.Entry("message-menu-order", R.string.InuMessageMenuOrder, BUTTON_MESSAGE_MENU_ORDER),
+                SearchRegistry.Entry("hide-sponsored-messages", R.string.InuHideSponsoredMessages, TOGGLE_HIDE_SPONSORED_MESSAGES),
                 SearchRegistry.Entry("chat-remember-all-replies", R.string.InuChatRememberAllReplies, TOGGLE_CHAT_REMEMBER_ALL_REPLIES),
                 SearchRegistry.Entry("show-forward-time", R.string.InuShowForwardTime, TOGGLE_SHOW_FORWARD_TIME),
                 SearchRegistry.Entry("compact-forwarded", R.string.InuForwardHeaderMode, BUTTON_FORWARD_HEADER_MODE),
