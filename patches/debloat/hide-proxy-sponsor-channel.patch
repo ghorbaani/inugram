@@ -4,16 +4,15 @@ Date: Sat, 14 Nov 2026 00:00:00 +0000
 Subject: [PATCH] hide proxy sponsor channel from dialogs list
 
 ---
- .../main/java/org/telegram/ui/DialogsActivity.java | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ .../main/java/org/telegram/ui/DialogsActivity.java | 13 ++++++++++++-
+ 1 file changed, 12 insertions(+), 1 deletion(-)
 
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
 +++ b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
-@@ -11101,9 +11101,18 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
-         MessagesController messagesController = AccountInstance.getInstance(currentAccount).getMessagesController();
-         if (dialogsType == DIALOGS_TYPE_DEFAULT) {
+@@ -11105,1 +11105,13 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+-            return messagesController.getDialogs(folderId);
 +            ArrayList<TLRPC.Dialog> dialogs = new ArrayList<>(messagesController.getDialogs(folderId));
 +            if (folderId == 0 && desu.inugram.InuConfig.HIDE_PROXY_SPONSOR_CHANNEL.getValue()) {
 +                for (int i = dialogs.size() - 1; i >= 0; i--) {
@@ -24,13 +23,6 @@ index 0000000..0000000 100644
 +                    }
 +                }
 +            }
-             if (folderId == 0 && desu.inugram.helpers.dialogs.PullActionHelper.hideArchiveRow()) {
--                return desu.inugram.helpers.dialogs.PullActionHelper.filterArchiveRow(messagesController.getDialogs(folderId));
-+                return desu.inugram.helpers.dialogs.PullActionHelper.filterArchiveRow(dialogs);
-             }
--            return messagesController.getDialogs(folderId);
 +            return dialogs;
-         } else if (dialogsType == DIALOGS_TYPE_WIDGET || dialogsType == DIALOGS_TYPE_IMPORT_HISTORY) {
-             return messagesController.dialogsServerOnly;
 -- 
 2.43.0
