@@ -1054,4 +1054,7 @@
     <string name="InuJalaliDatesInfo">Shows the date part of timestamps in the Jalali calendar. Times stay the same. Already shown messages update after reopening the chat.</string>
     <string name="InuJalaliPersianDigits">Persian digits in Jalali dates</string>
     <string name="InuHideProxySponsorChannel">Hide proxy sponsor channel</string>
+    <string name="InuHideAdDialogs">Select ad-only chats to hide</string>
+    <string name="InuHideAdDialogsCount">%1$d selected</string>
+    <string name="InuHideSponsoredMessages">Hide sponsored messages</string>
 </resources>
