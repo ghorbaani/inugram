@@ -73,6 +73,12 @@ class DialogsSettingsActivity : SettingsPageActivity() {
         )
         items.add(
             UItem.asCheck(
+                TOGGLE_HIDE_PROXY_SPONSOR_CHANNEL,
+                LocaleController.getString(R.string.InuHideProxySponsorChannel),
+            ).setChecked(InuConfig.HIDE_PROXY_SPONSOR_CHANNEL.value)
+        )
+        items.add(
+            UItem.asCheck(
                 TOGGLE_OLD_MENTION_INDICATOR,
                 LocaleController.getString(R.string.InuOldMentionIndicator),
             ).setChecked(InuConfig.OLD_MENTION_INDICATOR.value)
@@ -210,6 +216,12 @@ class DialogsSettingsActivity : SettingsPageActivity() {
 
             TOGGLE_BOT_WEBVIEW_BUTTON -> {
                 val new = InuConfig.HIDE_BOT_WEBVIEW_DIALOGS.toggle()
+                (view as? TextCheckCell)?.isChecked = new
+                softRebuild()
+            }
+
+            TOGGLE_HIDE_PROXY_SPONSOR_CHANNEL -> {
+                val new = InuConfig.HIDE_PROXY_SPONSOR_CHANNEL.toggle()
                 (view as? TextCheckCell)?.isChecked = new
                 softRebuild()
             }
@@ -356,6 +368,7 @@ class DialogsSettingsActivity : SettingsPageActivity() {
         private val BUTTON_FOLDERS_DISPLAY_MODE = InuUtils.generateId()
         private val BUTTON_FOLDERS_UNREAD_COUNTER_MODE = InuUtils.generateId()
         private val TOGGLE_BOT_WEBVIEW_BUTTON = InuUtils.generateId()
+        private val TOGGLE_HIDE_PROXY_SPONSOR_CHANNEL = InuUtils.generateId()
         private val TOGGLE_OLD_MENTION_INDICATOR = InuUtils.generateId()
         private val BUTTON_PULL_DOWN_ACTION = InuUtils.generateId()
         private val TOGGLE_DISABLE_SWIPE_TO_UNARCHIVE = InuUtils.generateId()
@@ -405,6 +418,7 @@ class DialogsSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("hide-all-chats-tab", R.string.InuHideAllChatsTab, TOGGLE_HIDE_ALL_CHATS_TAB),
                 SearchRegistry.Entry("folder-tabs-at-bottom", R.string.InuFolderTabsAtBottom, TOGGLE_FOLDER_TABS_AT_BOTTOM),
                 SearchRegistry.Entry("title-text", R.string.InuTitleText, BUTTON_TITLE_TEXT),
+                SearchRegistry.Entry("hide-proxy-sponsor-channel", R.string.InuHideProxySponsorChannel, TOGGLE_HIDE_PROXY_SPONSOR_CHANNEL),
                 SearchRegistry.Entry("old-mention-indicator", R.string.InuOldMentionIndicator, TOGGLE_OLD_MENTION_INDICATOR),
                 SearchRegistry.Entry("pull-down-action", R.string.InuPullDownAction, BUTTON_PULL_DOWN_ACTION),
                 SearchRegistry.Entry("disable-swipe-to-unarchive", R.string.InuDisableSwipeToUnarchive, TOGGLE_DISABLE_SWIPE_TO_UNARCHIVE),

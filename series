@@ -447,3 +447,4 @@ bugfix/bottom-bar-ripple-origin.patch
 bugfix/twidget-security-bump.patch
 bugfix/share-alert-keyboard.patch
 feature/jalali-dates.patch
+debloat/hide-proxy-sponsor-channel.patch
