@@ -12,7 +12,7 @@ object AdDialogsHelper {
 
     @JvmStatic
     fun isHidden(account: Int, dialogId: Long): Boolean {
-        return InuConfig.prefs.getStringSet(key(account), emptySet())
+        return InuConfig.prefs.getStringSet(key(account), null)
             ?.contains(dialogId.toString()) == true
     }
 
@@ -25,7 +25,7 @@ object AdDialogsHelper {
     @JvmStatic
     fun setHidden(account: Int, dialogIds: Collection<Long>) {
         InuConfig.prefs.edit {
-            putStringSet(key(account), dialogIds.mapTo(HashSet(), Long::toString))
+            putStringSet(key(account), dialogIds.map { it.toString() }.toHashSet())
         }
     }
 }
