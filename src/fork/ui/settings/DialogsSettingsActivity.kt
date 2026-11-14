@@ -1,10 +1,8 @@
 package desu.inugram.ui.settings
 
-import android.os.Bundle
 import android.view.View
 import desu.inugram.InuConfig
 import desu.inugram.SearchRegistry
-import desu.inugram.helpers.dialogs.AdDialogsHelper
 import desu.inugram.helpers.dialogs.DialogsFabHelper
 import desu.inugram.helpers.dialogs.FolderHelper
 import desu.inugram.helpers.InuUtils
@@ -15,7 +13,6 @@ import org.telegram.messenger.R
 import org.telegram.messenger.UserConfig
 import org.telegram.ui.Cells.NotificationsCheckCell
 import org.telegram.ui.Cells.TextCheckCell
-import org.telegram.ui.GroupCreateActivity
 import org.telegram.ui.Components.UItem
 import org.telegram.ui.Components.UniversalAdapter
 
@@ -79,13 +76,6 @@ class DialogsSettingsActivity : SettingsPageActivity() {
                 TOGGLE_HIDE_PROXY_SPONSOR_CHANNEL,
                 LocaleController.getString(R.string.InuHideProxySponsorChannel),
             ).setChecked(InuConfig.HIDE_PROXY_SPONSOR_CHANNEL.value)
-        )
-        items.add(
-            UItem.asButton(
-                BUTTON_HIDDEN_AD_DIALOGS,
-                LocaleController.getString(R.string.InuHideAdDialogs),
-                LocaleController.formatString(R.string.InuHideAdDialogsCount, AdDialogsHelper.getHidden(currentAccount).size),
-            )
         )
         items.add(
             UItem.asCheck(
@@ -236,8 +226,6 @@ class DialogsSettingsActivity : SettingsPageActivity() {
                 softRebuild()
             }
 
-            BUTTON_HIDDEN_AD_DIALOGS -> openHiddenAdDialogsPicker()
-
             TOGGLE_OLD_MENTION_INDICATOR -> {
                 val new = InuConfig.OLD_MENTION_INDICATOR.toggle()
                 (view as? TextCheckCell)?.isChecked = new
@@ -298,22 +286,6 @@ class DialogsSettingsActivity : SettingsPageActivity() {
                 softRebuild()
             }
         }
-    }
-
-    private fun openHiddenAdDialogsPicker() {
-        val args = Bundle().apply {
-            putBoolean("isNeverShare", true)
-            putInt("chatAddType", 2)
-            putBoolean("inu_allowChannels", true)
-        }
-        val fragment = GroupCreateActivity(args)
-        fragment.select(ArrayList(AdDialogsHelper.getHidden(currentAccount)), false, false)
-        fragment.setDelegate { _, _, ids ->
-            AdDialogsHelper.setHidden(currentAccount, ids)
-            listView.adapter.update(true)
-            softRebuild()
-        }
-        presentFragment(fragment)
     }
 
     private fun showCommunityDisplayModeSelector() {
@@ -397,7 +369,6 @@ class DialogsSettingsActivity : SettingsPageActivity() {
         private val BUTTON_FOLDERS_UNREAD_COUNTER_MODE = InuUtils.generateId()
         private val TOGGLE_BOT_WEBVIEW_BUTTON = InuUtils.generateId()
         private val TOGGLE_HIDE_PROXY_SPONSOR_CHANNEL = InuUtils.generateId()
-        private val BUTTON_HIDDEN_AD_DIALOGS = InuUtils.generateId()
         private val TOGGLE_OLD_MENTION_INDICATOR = InuUtils.generateId()
         private val BUTTON_PULL_DOWN_ACTION = InuUtils.generateId()
         private val TOGGLE_DISABLE_SWIPE_TO_UNARCHIVE = InuUtils.generateId()
@@ -448,7 +419,6 @@ class DialogsSettingsActivity : SettingsPageActivity() {
                 SearchRegistry.Entry("folder-tabs-at-bottom", R.string.InuFolderTabsAtBottom, TOGGLE_FOLDER_TABS_AT_BOTTOM),
                 SearchRegistry.Entry("title-text", R.string.InuTitleText, BUTTON_TITLE_TEXT),
                 SearchRegistry.Entry("hide-proxy-sponsor-channel", R.string.InuHideProxySponsorChannel, TOGGLE_HIDE_PROXY_SPONSOR_CHANNEL),
-                SearchRegistry.Entry("hide-ad-dialogs", R.string.InuHideAdDialogs, BUTTON_HIDDEN_AD_DIALOGS),
                 SearchRegistry.Entry("old-mention-indicator", R.string.InuOldMentionIndicator, TOGGLE_OLD_MENTION_INDICATOR),
                 SearchRegistry.Entry("pull-down-action", R.string.InuPullDownAction, BUTTON_PULL_DOWN_ACTION),
                 SearchRegistry.Entry("disable-swipe-to-unarchive", R.string.InuDisableSwipeToUnarchive, TOGGLE_DISABLE_SWIPE_TO_UNARCHIVE),
