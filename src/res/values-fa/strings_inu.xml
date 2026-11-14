@@ -1006,6 +1006,7 @@
     <string name="InuSendServerError">تلگرام در تحویل پیام شما مشکل دارد. هنوز در حال تلاش مجدد…</string>
     <string name="InuJalaliDates">نمایش تاریخ شمسی</string>
     <string name="InuJalaliDatesInfo">بخش تاریخِ زمان‌ها را بر اساس تقویم جلالی نمایش می‌دهد؛ ساعت‌ها تغییری نمی‌کنند. تاریخ پیام‌هایی که پیش‌تر نمایش داده شده‌اند، پس از باز کردن دوبارهٔ گفتگو به‌روز می‌شود.</string>
+    <string name="InuHideProxySponsorChannel">مخفی کردن کانال حامی پروکسی</string>
     <string name="InuJalaliPersianDigits">استفاده از ارقام فارسی</string>
 
     <!-- ترجمه‌های تکمیلی -->
