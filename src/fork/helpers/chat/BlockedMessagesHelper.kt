@@ -196,13 +196,13 @@ object BlockedMessagesHelper {
     @JvmStatic
     fun refreshVisible(adapter: ChatActivity.ChatActivityAdapter): ArrayList<MessageObject> {
         val source = adapter.inu_getSourceMessages()
-        adapter.inu_filtering = isHideMode()
+        adapter.inu_filtering = isHideMode() || InuConfig.HIDE_SPONSORED_MESSAGES.value
         if (!adapter.inu_filtering) return source
         val buffer = adapter.inu_visibleMessages
         buffer.clear()
         for (i in 0 until source.size) {
             val msg = source[i]
-            if (msg != null && !shouldHide(msg)) buffer.add(msg)
+            if (msg != null && !shouldHide(msg) && !(InuConfig.HIDE_SPONSORED_MESSAGES.value && msg.isSponsored())) buffer.add(msg)
         }
         for (i in buffer.indices.reversed()) {
             val msg = buffer[i]
