@@ -5,13 +5,13 @@ Subject: [PATCH] hide proxy sponsor channel from dialogs list
 
 ---
  .../main/java/org/telegram/ui/DialogsActivity.java | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
 index 0000000..0000000 100644
 --- a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
 +++ b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
-@@ -11101,9 +11101,17 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+@@ -11101,7 +11101,15 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
          MessagesController messagesController = AccountInstance.getInstance(currentAccount).getMessagesController();
          if (dialogsType == DIALOGS_TYPE_DEFAULT) {
 +            ArrayList<TLRPC.Dialog> dialogs = new ArrayList<>(messagesController.getDialogs(folderId));
