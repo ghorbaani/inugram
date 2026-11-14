@@ -4,8 +4,8 @@ Date: Sat, 14 Nov 2026 00:00:00 +0000
 Subject: [PATCH] hide proxy sponsor channel from dialogs list
 
 ---
- .../main/java/org/telegram/ui/DialogsActivity.java | 14 ++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ .../main/java/org/telegram/ui/DialogsActivity.java | 21 +++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
 diff --git a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
 index 0000000..0000000 100644
@@ -14,11 +14,14 @@ index 0000000..0000000 100644
 @@ -11101,7 +11101,20 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
          if (dialogsType == DIALOGS_TYPE_DEFAULT) {
 +            ArrayList<TLRPC.Dialog> dialogs = new ArrayList<>(messagesController.getDialogs(folderId));
-+            if (folderId == 0 && desu.inugram.InuConfig.HIDE_PROXY_SPONSOR_CHANNEL.getValue()) {
++            if (folderId == 0) {
 +                for (int i = dialogs.size() - 1; i >= 0; i--) {
 +                    TLRPC.Dialog dialog = dialogs.get(i);
-+                    if (messagesController.isPromoDialog(dialog.id, false)
-+                            && messagesController.promoDialogType == MessagesController.PROMO_TYPE_PROXY) {
++                    boolean hideProxySponsor = desu.inugram.InuConfig.HIDE_PROXY_SPONSOR_CHANNEL.getValue()
++                            && messagesController.isPromoDialog(dialog.id, false)
++                            && messagesController.promoDialogType == MessagesController.PROMO_TYPE_PROXY;
++                    boolean hideSelectedAdDialog = desu.inugram.helpers.dialogs.AdDialogsHelper.isHidden(currentAccount, dialog.id);
++                    if (hideProxySponsor || hideSelectedAdDialog) {
 +                        dialogs.remove(i);
 +                    }
 +                }
