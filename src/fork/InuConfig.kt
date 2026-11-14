@@ -120,6 +120,9 @@ object InuConfig {
     val HIDE_STORIES = BoolItem("hide_stories", false)
 
     @JvmField
+    val HIDE_PROXY_SPONSOR_CHANNEL = BoolItem("hide_proxy_sponsor_channel", false)
+
+    @JvmField
     val SHOW_SECONDS = BoolItem("show_seconds", false)
 
     @JvmField
