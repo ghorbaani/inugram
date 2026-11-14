@@ -123,6 +123,9 @@ object InuConfig {
     val HIDE_PROXY_SPONSOR_CHANNEL = BoolItem("hide_proxy_sponsor_channel", false)
 
     @JvmField
+    val HIDE_SPONSORED_MESSAGES = BoolItem("hide_sponsored_messages", false)
+
+    @JvmField
     val SHOW_SECONDS = BoolItem("show_seconds", false)
 
     @JvmField
