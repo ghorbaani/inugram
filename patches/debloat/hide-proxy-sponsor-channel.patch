@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Inugram contributors <dev@inugram>
+Date: Sat, 14 Nov 2026 00:00:00 +0000
+Subject: [PATCH] hide proxy sponsor channel from dialogs list
+
+---
+ .../main/java/org/telegram/ui/DialogsActivity.java | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
+index 0000000..0000000 100644
+--- a/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
++++ b/TMessagesProj/src/main/java/org/telegram/ui/DialogsActivity.java
+@@ -11099,9 +11099,18 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+         MessagesController messagesController = AccountInstance.getInstance(currentAccount).getMessagesController();
+         if (dialogsType == DIALOGS_TYPE_DEFAULT) {
+             if (folderId == 0 && desu.inugram.helpers.dialogs.PullActionHelper.hideArchiveRow()) {
+-                return desu.inugram.helpers.dialogs.PullActionHelper.filterArchiveRow(messagesController.getDialogs(folderId));
++                ArrayList<TLRPC.Dialog> dialogs = new ArrayList<>(messagesController.getDialogs(folderId));
++                filterProxySponsorDialog(messagesController, dialogs);
++                return desu.inugram.helpers.dialogs.PullActionHelper.filterArchiveRow(dialogs);
+             }
+-            return messagesController.getDialogs(folderId);
++            ArrayList<TLRPC.Dialog> dialogs = new ArrayList<>(messagesController.getDialogs(folderId));
++            if (folderId == 0) {
++                filterProxySponsorDialog(messagesController, dialogs);
++            }
++            return dialogs;
+         } else if (dialogsType == DIALOGS_TYPE_WIDGET || dialogsType == DIALOGS_TYPE_IMPORT_HISTORY) {
+             return messagesController.dialogsServerOnly;
+@@ -11112,6 +11121,15 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
+         }
+     }
++
++    private static void filterProxySponsorDialog(MessagesController messagesController, ArrayList<TLRPC.Dialog> dialogs) {
++        if (!desu.inugram.InuConfig.HIDE_PROXY_SPONSOR_CHANNEL.getValue()) {
++            return;
++        }
++        dialogs.removeIf(dialog ->
++                messagesController.isPromoDialog(dialog.id, false)
++                        && messagesController.promoDialogType == MessagesController.PROMO_TYPE_PROXY
++        );
++    }
+-- 
+2.43.0
